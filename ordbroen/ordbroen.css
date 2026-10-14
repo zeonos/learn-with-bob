@@ -1,0 +1,32 @@
+/* Ordbroen – reuses Ordjægeren's play layout (oj-*) and adds the bridge scene */
+.ob-route { background: #EAF4FB; }
+.ob-route.next { background: #FFF1C4; }
+.ob-practice { background: #DCEEFA; }
+.ob-scene { background: #CDEBFA; }
+.ob-mark { position: absolute; bottom: 42%; width: 6%; min-width: 28px; pointer-events: none; }
+.ob-mark svg { width: 100%; height: auto; display: block; }
+.ob-dk { left: 3%; }
+.ob-uk { right: 3%; bottom: 41%; }
+.ob-plank { position: absolute; top: 62%; height: 4.5%; min-height: 10px; transform: translateY(-50%) scaleX(0); transform-origin: left; background: #C68A4E; border: 2px solid #4A2C17; border-radius: 3px; transition: transform .35s ease-out; }
+.ob-plank.on { transform: translateY(-50%) scaleX(1); }
+.ob-plank.patch { background: #E3C9A0; border-style: dashed; }
+.ob-word { display: flex; align-items: center; justify-content: center; gap: 12px; font-size: clamp(30px, 6vw, 44px); font-weight: 800; margin: 4px 0 18px; text-align: center; }
+.ob-word.da { color: #3E5B78; }
+.ob-say { width: 46px; height: 46px; }
+.ob-note { background: #E6F4FC; border-radius: 12px; padding: 8px 12px; font-weight: 700; margin: 10px 0 0; }
+.ob-da { font-size: 20px; font-weight: 700; color: var(--muted); margin: 0 0 10px; }
+.ob-line { min-height: 64px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px; border: 3px dashed #9CCBE8; border-radius: 16px; margin: 0 0 12px; background: #fff; }
+.ob-line.right { border-style: solid; border-color: #2E6E2A; background: #E4F4DF; }
+.ob-line.wrong { border-color: var(--red); background: #FBE1DD; }
+.ob-placeholder { color: var(--muted); font-weight: 800; padding: 0 8px; }
+.ob-done { font-size: 22px; font-weight: 800; padding: 4px 8px; }
+.ob-cards { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.ob-card { min-height: 52px; padding: 8px 16px; border-radius: 14px; border: 3px solid var(--ink); background: #fff; font-size: 21px; font-weight: 800; color: var(--ink); cursor: pointer; box-shadow: 0 3px 0 var(--ink); }
+.ob-card.in { background: #FFF1C4; box-shadow: none; }
+.ob-card:disabled { cursor: default; }
+.ob-text { background: #fff; border: 2px solid var(--line); border-radius: 16px; padding: 12px 16px; margin: 0 0 12px; font-size: 18px; line-height: 1.55; }
+.ob-text h3 { margin: 0 0 4px; font-size: 18px; }
+.ob-text p { margin: 0; }
+.ob-q { font-weight: 800; font-size: 19px; margin: 0 0 10px; }
+.ob-chip { border-color: #2F7DB3; background: #E6F4FC; color: #184A6E; }
+.ob-note + .ob-next { margin-top: 12px; }

@@ -1,0 +1,255 @@
+/* Mysteriet på museet (prefix mu-) */
+
+/* ---------- map ---------- */
+.mu-map .rs-title .bob { width: 160px; }
+.mu-map .topbar { flex-wrap: wrap; gap: 8px; }
+.mu-topbtns { display: flex; gap: 8px; flex-wrap: wrap; }
+.mu-storycard { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; background: #FBF3E2; border-color: #E2CFA4; }
+.mu-storycard p { margin: 0 0 8px; }
+.mu-storycard > div:last-child { flex: 1; min-width: 220px; }
+.mu-story-faces { display: flex; gap: 4px; }
+.mu-story-faces svg { display: block; }
+.mu-plannote { margin: -6px 0 12px; }
+.mu-room { border-top-width: 8px; }
+.mu-room.r-hallen { border-top-color: #2E4B5C; }
+.mu-room.r-oldtiden { border-top-color: #6E7A3A; }
+.mu-room.r-vikingetiden { border-top-color: #8C3B22; }
+.mu-room.r-middelalderen { border-top-color: #6E6858; }
+.mu-room.r-renaessancen { border-top-color: #2F4A7A; }
+.mu-room.r-loftet { border-top-color: #5A4766; }
+.mu-room.lit { background: #FFF6D8; }
+.mu-room.next { border-top-color: var(--blue); }
+.mu-room .mu-era { font-size: 14px; font-weight: 800; color: #6B4A1E; }
+.mu-room.locked { background: #EFEAE0; border-color: #A89A82; box-shadow: 0 5px 0 #A89A82; cursor: default; color: #5E4B36; }
+.mu-room.locked:hover, .mu-room.locked:active { transform: none; }
+.mu-room.locked .rs-world-desc { color: #5E4B36; }
+.mu-room.locked .rs-world-no { background: #D8D0C0; }
+.mu-room.locked .mu-roomicon { opacity: .45; }
+.mu-lockchip { display: inline-flex; align-items: center; gap: 4px; font-weight: 800; font-size: 14px; color: #5E4B36; }
+.mu-roomicon { width: 44px; height: 44px; margin: -6px -4px -4px 0; }
+.mu-roomicon svg { display: block; }
+
+/* story dialog, notebook, result */
+.mu-overlay { overflow-y: auto; align-items: flex-start; }
+.mu-overlay > .rs-dialog { margin: auto 0; }
+.mu-storydlg, .mu-nb { max-width: 620px; text-align: left; align-items: stretch; }
+.mu-storydlg .bob { align-self: center; width: 120px; }
+.mu-storydlg h2, .mu-nb h2 { text-align: center; margin: 0; }
+.mu-storydlg h3, .mu-nb h3 { margin: 10px 0 2px; font-size: 18px; }
+.mu-storytext p { margin: 0 0 8px; font-size: 17px; line-height: 1.45; }
+.mu-storydlg .row.center, .mu-nb .row.center { margin-top: 8px; }
+.mu-result { max-width: 520px; }
+.mu-result .bob { width: 120px; }
+.mu-newcard { background: var(--green); }
+.mu-result .mu-card { margin: 4px 0; box-shadow: none; border-width: 2px; }
+
+/* ---------- play ---------- */
+.mu-play { min-height: 100vh; min-height: 100dvh; background: var(--bg); }
+.mu-inner { max-width: 940px; margin: 0 auto; padding: 12px 16px calc(32px + env(safe-area-inset-bottom)); }
+.mu-bobline { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; min-height: 60px; }
+.mu-bobface { flex: none; width: 60px; height: 60px; }
+.mu-bobface svg { width: 100%; height: 100%; display: block; }
+.mu-bobface.react { animation: ojhop .5s ease-out; }
+.mu-say { margin: 0; flex: 1; background: #fff; color: var(--ink); border: 3px solid var(--ink); border-radius: 16px 16px 16px 4px; padding: 8px 12px; font-weight: 700; font-size: 17px; line-height: 1.35; min-height: 1.4em; }
+.mu-say:empty { visibility: hidden; }
+.mu-intro { color: var(--muted); font-size: 16px; margin: 0 0 10px; }
+.mu-nbicon svg { width: 24px; height: 24px; }
+
+/* the drawn room and the things to tap */
+.mu-stage { position: relative; border: 3px solid var(--ink); border-radius: 16px; overflow: hidden; background: #1A1420; box-shadow: 0 4px 0 rgba(0,0,0,.18); }
+.mu-svg { display: block; width: 100%; height: auto; }
+.mu-spot { position: absolute; transform: translate(-50%, -50%); min-width: 44px; min-height: 44px; border: 3px dashed rgba(255, 236, 170, .35); border-radius: 14px; background: transparent; cursor: pointer; padding: 0; transition: box-shadow .2s, border-color .2s, background .2s; }
+.mu-spot:hover, .mu-spot:focus-visible { border-color: #FFE27A; border-style: solid; background: rgba(255, 226, 122, .14); box-shadow: 0 0 0 3px rgba(43, 29, 16, .6), 0 0 22px 6px rgba(255, 214, 102, .55); outline: none; }
+.mu-spot.seen { border-color: rgba(255, 255, 255, .18); }
+.mu-spot-badge { position: absolute; right: -2px; top: -2px; width: 28px; height: 28px; border-radius: 50%; background: #FFE27A; color: #2B1D10; border: 2px solid #2B1D10; display: flex; align-items: center; justify-content: center; }
+.mu-spot.seen .mu-spot-badge { background: #CFE8C4; }
+.mu-spot.lock .mu-spot-badge { background: #F7C548; }
+.mu-open .mu-leaf { transform-box: fill-box; transform-origin: left center; transform: perspective(600px) rotateY(-62deg); transition: transform 1.2s ease-out; }
+.mu-leaf { transition: transform 1.2s ease-out; }
+
+.mu-chips { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; margin: 10px 0 0; }
+.mu-chips-label { font-weight: 800; color: var(--muted); margin-right: 2px; }
+.mu-chip { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 6px 12px; border: 3px solid var(--ink); border-radius: 999px; background: #fff; color: var(--ink); font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 3px 0 var(--ink); }
+.mu-chip:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+.mu-chip.seen { background: #EEF6EA; }
+.mu-chip.lock { background: var(--yellow-l); }
+.mu-chip-ico { display: inline-flex; }
+.mu-pocket { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 10px 0 0; font-size: 15px; }
+.mu-pocket-label { font-weight: 800; color: var(--muted); }
+.mu-item { background: #F3E9D2; border: 2px solid #C9B48A; border-radius: 10px; padding: 2px 10px; font-weight: 700; }
+.mu-note:not(:empty) { margin: 10px 0 0; }
+.mu-newclue { background: #FFF6D8; border: 2px solid #E8C468; border-radius: 12px; padding: 6px 12px; margin: 0 0 6px; animation: ojin .25s ease-out; }
+
+/* the puzzle panel */
+.mu-panel { margin-top: 14px; }
+.mu-panel:not(:empty) { background: #FFFDF6; border: 3px solid #D9C49A; border-radius: 18px; padding: 14px; }
+.mu-panel .mu-openlock { display: flex; width: 100%; justify-content: center; align-items: center; gap: 6px; min-height: 56px; font-size: 19px; }
+.mu-panel:has(> .mu-openlock:only-child) { background: transparent; border: 0; padding: 0; }
+.mu-q { font-weight: 800; font-size: 19px; margin: 0 0 10px; line-height: 1.35; }
+.mu-stepno { margin: 0 0 4px; font-size: 14px; font-weight: 800; color: var(--blue); text-transform: uppercase; letter-spacing: .04em; }
+.mu-small { font-size: 15px; margin: 4px 0 8px; }
+.shake { animation: mushake .4s; }
+@keyframes mushake { 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+
+/* code lock */
+.mu-codeinfo { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 12px; }
+.mu-clockbox svg { display: block; }
+.mu-codefacts { flex: 1; min-width: 220px; }
+.mu-rule { margin: 0 0 8px; font-size: 17px; background: #F3E9D2; border-left: 6px solid #8A6A3A; border-radius: 8px; padding: 8px 10px; }
+.mu-chipline { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; }
+.mu-tag { background: #fff; border: 2px solid #C9B48A; border-radius: 10px; padding: 2px 8px; font-weight: 700; font-size: 15px; }
+.mu-signs { background: #fff; border: 2px solid #C9B48A; border-radius: 12px; padding: 6px 12px; }
+.mu-signs ul { margin: 4px 0 0; padding-left: 18px; }
+.mu-signs li { margin: 2px 0; }
+.mu-lock { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.mu-fields { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.mu-field { display: flex; flex-direction: column; align-items: center; min-width: 92px; min-height: 64px; padding: 4px 10px; border: 3px solid var(--ink); border-radius: 12px; background: #20262B; color: #FFE27A; cursor: pointer; font: inherit; }
+.mu-field.sel { box-shadow: 0 0 0 4px var(--yellow); }
+.mu-field-label { font-size: 13px; font-weight: 700; color: #E8E4D8; }
+.mu-field-val { font-size: 28px; font-weight: 800; font-family: ui-monospace, Consolas, monospace; letter-spacing: .12em; min-height: 1.2em; }
+.mu-keypad { display: grid; grid-template-columns: repeat(3, 64px); gap: 8px; }
+.mu-key { min-width: 48px; min-height: 52px; border: 3px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); font: inherit; font-size: 22px; font-weight: 800; cursor: pointer; box-shadow: 0 3px 0 var(--ink); padding: 0 6px; }
+.mu-key:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+.mu-key-del { font-size: 15px; background: #FBE1DD; }
+.mu-key-ok { background: var(--yellow); }
+.mu-try { min-width: 200px; }
+
+/* timeline */
+.mu-periods { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 0 0 10px; }
+.mu-period { display: flex; flex-direction: column; border-radius: 10px; padding: 4px 8px; font-size: 13px; line-height: 1.25; border: 2px solid rgba(0,0,0,.2); }
+.mu-period strong { font-size: 15px; }
+.p-sten { background: #E4E1DA; } .p-bronze { background: #F2D9AE; } .p-jern { background: #D6DEE4; } .p-viking { background: #F2CFC4; }
+.mu-tl-ends { display: flex; justify-content: space-between; font-weight: 800; color: var(--muted); font-size: 14px; margin: 4px 2px; }
+.mu-slots { list-style: none; margin: 0 0 12px; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; }
+.mu-slot { position: relative; display: flex; min-height: 92px; border: 3px dashed #B8A27A; border-radius: 14px; background: #F7F0DE; }
+.mu-slot.full { border-style: solid; border-color: var(--ink); background: #fff; }
+.mu-slot-no { position: absolute; left: -6px; top: -10px; width: 26px; height: 26px; border-radius: 50%; background: #8A6A3A; color: #fff; font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center; z-index: 1; }
+.mu-slot-empty { margin: auto; color: #8A7A5E; font-size: 14px; }
+.mu-pool { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; margin: 0 0 12px; }
+.mu-find { display: flex; gap: 6px; align-items: center; text-align: left; width: 100%; min-height: 86px; padding: 6px 8px; border: 3px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); font: inherit; cursor: pointer; box-shadow: 0 3px 0 var(--ink); }
+.mu-find.placed { border: 0; box-shadow: none; background: transparent; }
+.mu-find-pic svg { display: block; }
+.mu-find-txt { display: flex; flex-direction: column; min-width: 0; }
+.mu-find-txt strong { font-size: 16px; line-height: 1.15; hyphens: manual; overflow-wrap: anywhere; }
+.mu-find-what { font-size: 13px; color: var(--muted); line-height: 1.2; }
+.mu-when { align-self: flex-start; margin-top: 3px; font-size: 13px; font-weight: 800; border-radius: 8px; padding: 0 6px; background: #FFF3C4; border: 1px solid #C9A03B; }
+
+/* runes */
+.mu-runeband { background: #CFC6B4; border: 4px solid #6E6658; border-radius: 14px; padding: 10px; margin: 0 auto 12px; overflow-x: auto; text-align: center; }
+.mu-runeband svg { max-width: 100%; height: auto; }
+.mu-runekey { background: #F3E9D2; border: 2px solid #8A6A3A; border-radius: 12px; padding: 8px; margin: 0 0 12px; }
+.mu-runekey-title { display: block; font-size: 15px; margin: 0 0 4px; color: #6B4A1E; }
+.mu-runegrid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; }
+.mu-runecell { display: flex; flex-direction: column; align-items: center; background: #fff; border-radius: 8px; padding: 2px 0; }
+.mu-runecell svg { display: block; }
+.mu-runecell b { font-size: 14px; color: #8C2F25; white-space: nowrap; }
+.mu-typeword { font-weight: 800; margin: 4px 0; }
+.mu-letters { display: flex; gap: 8px; justify-content: center; margin: 0 0 12px; }
+.mu-letterbox { width: 48px; height: 56px; border: 3px solid var(--ink); border-radius: 10px; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 800; }
+.mu-letterbox.sel { box-shadow: 0 0 0 4px var(--yellow); }
+.mu-abc { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; margin: 0 0 12px; }
+.mu-abc .mu-key { min-width: 0; padding: 0; }
+.mu-abc .mu-key-del { grid-column: span 1; }
+
+/* scale */
+.mu-eq { text-align: center; font-size: 24px; font-weight: 800; font-family: Georgia, serif; margin: 0 0 6px; }
+.mu-scalebox { text-align: center; }
+.mu-scalebox svg { max-width: 100%; height: auto; }
+.mu-weights { margin-top: 8px; }
+.mu-scalewords { text-align: center; font-weight: 700; margin: 4px 0 0; }
+
+/* the letter */
+.mu-letter { background: #FBF3DF; border: 2px solid #C9B48A; border-radius: 6px 18px 6px 18px; padding: 14px 18px; margin: 0 0 14px; box-shadow: 0 3px 0 rgba(74,44,23,.15); }
+.mu-letter-text p { margin: 0 0 6px; font-family: Georgia, 'Times New Roman', serif; font-size: 18px; line-height: 1.45; color: #2B1D10; }
+.mu-speak-en { margin-top: 6px; }
+
+/* suspects */
+.mu-suspects { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 6px 0 10px; }
+.mu-suspect { position: relative; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 6px; min-height: 120px; border: 3px solid var(--ink); border-radius: 14px; background: #fff; color: var(--ink); font: inherit; text-align: center; cursor: pointer; box-shadow: 0 3px 0 var(--ink); overflow: hidden; }
+.mu-suspect.static { cursor: default; box-shadow: none; min-height: 0; }
+.mu-suspect strong { font-size: 16px; line-height: 1.15; }
+.mu-role { font-size: 13px; color: var(--muted); }
+.mu-face svg { display: block; }
+.mu-stamp { display: none; }
+.mu-suspect.struck { background: #EDEAE3; }
+.mu-suspect.struck .mu-face, .mu-suspect.struck strong, .mu-suspect.struck .mu-role { opacity: .55; }
+.mu-suspect.struck::after { content: ''; position: absolute; left: 6%; right: 6%; top: 50%; border-top: 5px solid var(--red); transform: rotate(-14deg); }
+.mu-suspect.struck .mu-role { display: none; }
+.mu-suspect.struck .mu-stamp { display: inline-block; position: relative; z-index: 1; transform: rotate(-4deg); background: var(--green); color: #fff; font-weight: 800; font-size: 13px; border-radius: 999px; padding: 1px 8px; white-space: nowrap; }
+.mu-cluehelp { background: #E6F4FC; border: 2px solid #A9CFE8; border-radius: 12px; padding: 8px 12px; margin: 0 0 10px; font-size: 15px; }
+.mu-cluehelp ul { margin: 4px 0 0; padding-left: 18px; }
+.mu-cluelist { margin: 4px 0 6px; padding-left: 22px; }
+.mu-cluelist li { margin: 4px 0; font-size: 16px; }
+.mu-cluelist li.clears::marker { color: var(--green); font-weight: 800; }
+.mu-cluelist li.points::marker { color: var(--red); font-weight: 800; }
+
+/* help and the lesson */
+.mu-tools { margin: 12px 0 0; }
+.mu-toolrow { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.mu-toolrow .btn:disabled { opacity: .5; cursor: default; box-shadow: none; }
+.mu-helpnote { text-align: center; font-size: 14px; color: var(--muted); margin: 8px 0 0; }
+.mu-explain { margin-top: 12px; }
+.mu-explain .oj-rule { margin-bottom: 12px; }
+.mu-explain .oj-rule p { font-size: 17px; line-height: 1.45; }
+.mu-head { font-weight: 800; color: #1E4E79; font-size: 14px !important; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px !important; }
+.mu-solved-stars { text-align: center; }
+.mu-lesson { background: #EAF6E6; border-color: var(--green); }
+.mu-lessonnotes { margin: 8px 0; }
+
+/* ending */
+.mu-ending-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; text-align: center; }
+.mu-ending-head .bob { width: 150px; }
+.mu-ending-head h1 { width: 100%; margin: 4px 0 8px; }
+.mu-ending-faces { display: flex; gap: 6px; }
+.mu-ending-faces svg { display: block; }
+.mu-ending-story p, .mu-truestory p { font-size: 18px; line-height: 1.5; margin: 0 0 10px; }
+.mu-truestory { background: #FFF6D8; border-color: #E8C468; margin-top: 14px; }
+.mu-truestory h2 { margin-top: 0; }
+.mu-ending .row.center { margin: 18px 0 30px; }
+
+/* collection */
+.mu-colband h2 { margin-top: 22px; }
+.mu-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+.mu-card { background: #fff; border: 3px solid var(--ink); border-radius: 18px; padding: 14px 16px; box-shadow: 0 4px 0 rgba(74,44,23,.15); text-align: left; }
+.mu-card.locked { background: #F1EEE6; border-style: dashed; color: #5E4B36; box-shadow: none; }
+.mu-card-head { display: flex; gap: 12px; align-items: center; margin-bottom: 8px; }
+.mu-card-ico { flex: none; width: 60px; height: 60px; background: #FBF3DF; border-radius: 12px; }
+.mu-card-ico svg { display: block; }
+.mu-card h3 { margin: 0; font-size: 20px; color: var(--ink); }
+.mu-card.locked h3 { color: #5E4B36; }
+.mu-card-era { font-size: 14px; font-weight: 700; color: #6B4A1E; }
+.mu-card-new { display: inline-block; background: var(--green); color: #fff; font-weight: 800; font-size: 13px; border-radius: 999px; padding: 1px 10px; margin-bottom: 2px; }
+.mu-card-fact { margin: 0 0 6px; font-size: 16px; line-height: 1.45; }
+.mu-card-src { margin: 0; font-size: 13px; color: var(--muted); }
+.mu-qmark { flex: none; width: 56px; height: 56px; border-radius: 50%; border: 3px dashed #B8A98E; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 800; color: #8A7A5E; margin: 0; }
+
+@media (max-width: 720px) {
+  .mu-suspects { grid-template-columns: repeat(2, 1fr); }
+  .mu-periods { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 520px) {
+  .mu-inner { padding: 10px 12px 28px; }
+  .mu-bobface { width: 50px; height: 50px; }
+  .mu-say { font-size: 15px; }
+  .mu-stage { border-width: 2px; border-radius: 12px; }
+  .mu-spot { border-width: 2px; }
+  .mu-spot-badge { width: 22px; height: 22px; }
+  .mu-spot-badge svg { width: 14px; height: 14px; }
+  .mu-map .rs-title .bob { width: 120px; }
+  .mu-panel:not(:empty) { padding: 10px; }
+  .mu-q { font-size: 17px; }
+  .mu-chip { font-size: 14px; padding: 4px 10px; }
+  .mu-runegrid { grid-template-columns: repeat(8, 1fr); gap: 2px; }
+  .mu-runecell b { font-size: 11px; }
+  .mu-abc { grid-template-columns: repeat(6, 1fr); gap: 6px; }
+  .mu-letter { padding: 10px 12px; }
+  .mu-letter-text p { font-size: 16px; }
+  .mu-ending-story p, .mu-truestory p { font-size: 16px; }
+  .mu-cards { grid-template-columns: 1fr; }
+  .mu-topbtns .btn { padding: 6px 12px; font-size: 15px; min-height: 44px; }
+  .mu-slots, .mu-pool { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .mu-find { flex-direction: column; align-items: flex-start; min-height: 0; padding: 6px; }
+  .mu-find-pic svg { width: 40px; height: 40px; }
+  .mu-find-what { display: none; }
+  .mu-slot { min-height: 110px; }
+}

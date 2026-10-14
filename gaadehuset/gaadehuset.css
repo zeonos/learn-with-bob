@@ -1,0 +1,175 @@
+/* Gådehuset – the house of puzzles (prefix gh-) */
+.gh-route { background: #EFE8FA; }
+.gh-route.next { background: #FFF1C4; }
+.gh-level { display: inline-block; align-self: flex-start; margin-top: 4px; font-size: 13px; font-weight: 800; color: #5B3F9E; background: #fff; border: 2px solid #CDBFEA; border-radius: 10px; padding: 1px 8px; }
+.gh-saved { display: block; margin-top: 4px; font-size: 13px; font-weight: 700; color: #B05A16; }
+.gh-extra { margin-top: 22px; gap: 12px; flex-wrap: wrap; }
+
+/* play screen */
+.gh-play { min-height: 100vh; min-height: 100dvh; background: var(--bg); }
+.gh-inner { max-width: 760px; margin: 0 auto; padding: 12px 16px calc(32px + env(safe-area-inset-bottom)); }
+.gh-bobline { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; min-height: 64px; }
+.gh-bob { flex: none; width: 64px; height: 64px; }
+.gh-bob svg { width: 100%; height: 100%; display: block; }
+.gh-bob.react { animation: ojhop .5s ease-out; }
+.gh-say { margin: 0; flex: 1; background: #fff; border: 3px solid var(--ink); border-radius: 16px 16px 16px 4px; padding: 8px 12px; font-weight: 700; font-size: 16px; min-height: 1.4em; }
+.gh-say:empty { visibility: hidden; }
+.gh-intro { color: var(--muted); font-size: 16px; margin: 0 0 12px; }
+.gh-board { margin: 0 0 12px; }
+.gh-tools { margin: 6px 0 0; }
+.gh-toolrow { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.gh-toolrow .btn:disabled { opacity: .5; cursor: default; box-shadow: none; }
+.gh-note { text-align: center; font-size: 14px; color: var(--muted); margin: 8px 0 0; }
+.gh-explain { margin-top: 14px; }
+.gh-explain .oj-rule p { margin: 4px 0; font-size: 17px; line-height: 1.45; }
+.gh-stephead { font-weight: 800; color: #5B3F9E; font-size: 14px !important; text-transform: uppercase; letter-spacing: .04em; }
+.gh-solved { text-align: center; background: #F1FBEE; border-color: #2E6E2A; }
+.gh-solved-stars { font-size: 0; margin-bottom: 4px; }
+.gh-solved-stars svg { width: 40px; height: 40px; }
+.gh-solved .btn { margin-top: 8px; }
+.gh-lvlmsg { font-weight: 800; color: #5B3F9E; }
+
+/* sudoku */
+.gh-sd { --c: min(52px, calc((100vw - 44px) / var(--n))); display: grid; grid-template-columns: repeat(var(--n), var(--c)); grid-auto-rows: var(--c); width: max-content; margin: 0 auto 12px; border: 3px solid var(--ink); background: #fff; border-radius: 6px; overflow: hidden; }
+.gh-sd-cell { border: 0; border-right: 1px solid #CDBB98; border-bottom: 1px solid #CDBB98; background: #fff; font: inherit; font-weight: 700; font-size: calc(var(--c) * .55); color: #2F6E9E; padding: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.gh-sd-cell.br { border-right: 3px solid var(--ink); }
+.gh-sd-cell.bb { border-bottom: 3px solid var(--ink); }
+.gh-sd-cell.given { color: var(--ink); background: #F5EEE1; font-weight: 800; }
+.gh-sd-cell.peer { background: #FFF6D8; }
+.gh-sd-cell.given.peer { background: #EFE3C8; }
+.gh-sd-cell.same { background: #D7ECF8; }
+.gh-sd-cell.sel { background: var(--yellow); outline: 3px solid var(--ink); outline-offset: -3px; }
+.gh-sd-cell.bad { background: #FBD5CF; color: var(--red); }
+.gh-sd-cell.tip { background: #CDEFC4; animation: pop .45s; }
+.gh-pad { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 520px; margin: 0 auto; }
+.gh-padkey { min-width: 48px; min-height: 48px; border-radius: 12px; border: 3px solid var(--ink); background: #fff; font-weight: 800; font-size: 22px; color: var(--ink); cursor: pointer; box-shadow: 0 3px 0 var(--ink); }
+.gh-padkey:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+.gh-padkey.erase { background: #F5EEE1; }
+
+/* picture puzzles */
+.gh-ng-modes { display: flex; justify-content: center; margin: 0 0 10px; }
+.gh-ng-ico { display: inline-block; width: 16px; height: 16px; margin-right: 6px; vertical-align: -2px; border: 2px solid var(--ink); border-radius: 3px; font-size: 12px; line-height: 12px; text-align: center; }
+.gh-ng-ico.fill { background: var(--ink); }
+.gh-ng-fit { display: flex; justify-content: center; overflow-x: auto; padding-bottom: 4px; }
+.gh-ng { --cs: 30px; display: grid; grid-template-columns: auto repeat(var(--w), var(--cs)); grid-template-rows: auto repeat(var(--h), var(--cs)); touch-action: none; user-select: none; -webkit-user-select: none; background: #fff; border-radius: 6px; }
+.gh-ng-corner { background: transparent; }
+.gh-ng-cc { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding: 2px 0 4px; font-weight: 800; font-size: clamp(11px, calc(var(--cs) * .5), 16px); line-height: 1.1; background: #F5EEE1; border-left: 1px solid #E3D6BB; }
+.gh-ng-rc { display: flex; justify-content: flex-end; align-items: center; gap: 5px; padding: 0 6px 0 4px; font-weight: 800; font-size: clamp(11px, calc(var(--cs) * .5), 16px); background: #F5EEE1; border-top: 1px solid #E3D6BB; white-space: nowrap; }
+.gh-ng-cc.done, .gh-ng-rc.done { color: #A89A85; background: #FBF7EE; }
+.gh-ng-cell { border-right: 1px solid #CDBB98; border-bottom: 1px solid #CDBB98; background: #fff; cursor: pointer; position: relative; }
+.gh-ng-cell.r5 { border-right: 2px solid var(--ink); }
+.gh-ng-cell.b5, .gh-ng-rc.b5 { border-bottom: 2px solid var(--ink); }
+.gh-ng-cc.b5 { border-right: 2px solid var(--ink); }
+.gh-ng-cell.on { background: var(--ink); }
+.gh-ng-cell.x::after { content: '✕'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #A0896A; font-size: calc(var(--cs) * .6); font-weight: 700; }
+.gh-ng-cell.bad { box-shadow: inset 0 0 0 3px var(--red); }
+.gh-ng-cell.bad:not(.on) { background: #FBD5CF; }
+.gh-ng-cell.tip { box-shadow: inset 0 0 0 3px #2E9E3A; }
+.gh-ng.solved .gh-ng-cell { border-color: transparent; }
+.gh-ng.solved .gh-ng-cell.x::after { content: none; }
+.gh-ng.solved .gh-ng-cell:not(.on) { background: #fff; }
+.gh-ng.solved { animation: pop .6s; }
+
+/* logic grids */
+.gh-lg-cluebox { background: #fff; border: 3px solid var(--ink); border-radius: 16px; padding: 10px 16px 6px; margin: 0 0 14px; }
+.gh-lg-cluebox h3 { margin: 0 0 4px; font-size: 17px; }
+.gh-lg-clues { margin: 0; padding-left: 24px; }
+.gh-lg-clues li { font-size: 17px; line-height: 1.4; padding: 4px 0; cursor: pointer; }
+.gh-lg-clues li.off { color: #A89A85; text-decoration: line-through; }
+.gh-lg-grids { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+.gh-lg { border-collapse: collapse; background: #fff; border: 3px solid var(--ink); }
+.gh-lg th, .gh-lg td { border: 1px solid #CDBB98; padding: 0; }
+.gh-lg thead th { text-align: center; font-size: 13px; padding: 4px 3px; background: #F5EEE1; min-width: 56px; max-width: 76px; overflow-wrap: anywhere; line-height: 1.15; }
+.gh-lg thead th.corner { color: #5B3F9E; text-align: left; padding-left: 6px; }
+.gh-lg tbody th { font-size: 15px; padding: 0 8px; text-align: left; background: #F5EEE1; white-space: nowrap; }
+.gh-lg-cell { width: 100%; min-width: 48px; height: 44px; border: 0; background: #fff; font-size: 24px; font-weight: 800; cursor: pointer; }
+.gh-lg-cell.yes { color: #2E6E2A; background: #E4F4DF; }
+.gh-lg-cell.no { color: #B03A2E; }
+.gh-lg-cell.bad { background: #FBD5CF; box-shadow: inset 0 0 0 3px var(--red); }
+.gh-lg-cell.tip { box-shadow: inset 0 0 0 3px #2E9E3A; }
+
+/* river crossings */
+.gh-rv-story { background: #fff; border: 3px solid var(--ink); border-radius: 16px; padding: 10px 14px; font-size: 17px; line-height: 1.45; margin: 0 0 12px; }
+.gh-rv { display: grid; grid-template-columns: 1fr 1.15fr 1fr; min-height: 190px; border-radius: 16px; overflow: hidden; border: 3px solid var(--ink); }
+.gh-rv-bank { background: #8CCB6A; display: flex; flex-wrap: wrap; align-content: flex-start; justify-content: center; gap: 4px; padding: 8px 4px; }
+.gh-rv-bank.right { background: #9FD27E; }
+.gh-rv-water { background: repeating-linear-gradient(170deg, #6BB8E0 0 18px, #7FC4EE 18px 36px); position: relative; }
+.gh-rv-boat { position: absolute; left: 4%; right: 30%; bottom: 10px; transition: left .6s ease-in-out, right .6s ease-in-out; }
+.gh-rv-water.at-right .gh-rv-boat { left: 30%; right: 4%; }
+.gh-rv-seats { display: flex; justify-content: center; gap: 2px; min-height: 66px; align-items: flex-end; }
+.gh-rv-hull { height: 30px; }
+.gh-rv-hull svg { width: 100%; height: 100%; display: block; }
+.gh-rv-item { display: inline-flex; flex-direction: column; align-items: center; background: rgba(255,255,255,.85); border: 2px solid var(--ink); border-radius: 12px; padding: 2px 4px 1px; cursor: pointer; min-width: 52px; font: inherit; color: var(--ink); }
+.gh-rv-item small { font-size: 11px; font-weight: 700; line-height: 1.1; white-space: nowrap; }
+.gh-rv-item:disabled { opacity: .55; cursor: default; }
+.gh-rv-item.tip { box-shadow: 0 0 0 3px #2E9E3A; }
+.gh-rv-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+.gh-rv-info, .gh-hn-info { font-weight: 800; font-size: 18px; }
+@media (max-width: 520px) {
+  .gh-rv { grid-template-columns: 1fr 1.5fr 1fr; }
+  .gh-rv-boat { left: 2%; right: 12%; }
+  .gh-rv-water.at-right .gh-rv-boat { left: 12%; right: 2%; }
+  .gh-rv-item { min-width: 0; width: 46px; padding: 1px; }
+  .gh-rv-item svg { width: 34px; height: 34px; }
+  .gh-rv-item small { font-size: 10px; white-space: normal; text-align: center; }
+}
+
+/* Tower of Hanoi */
+.gh-hn { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.gh-hn-peg { position: relative; height: calc(64px + var(--n) * 26px); border: 3px solid var(--ink); border-radius: 14px; background: #FFF8E8; cursor: pointer; display: flex; flex-direction: column-reverse; align-items: center; padding: 0 4px 30px; font: inherit; }
+.gh-hn-peg.goal { background: #EEF7E8; }
+.gh-hn-peg.sel { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue); }
+.gh-hn-peg.tip { box-shadow: 0 0 0 3px #2E9E3A; }
+.gh-hn-rod { position: absolute; left: 50%; bottom: 30px; top: 18px; width: 8px; margin-left: -4px; background: #8B5A2B; border-radius: 4px; }
+.gh-hn-disc { position: relative; height: 24px; width: calc(22% + var(--d) * 14%); max-width: 100%; margin-top: 2px; border: 2px solid var(--ink); border-radius: 10px; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; color: var(--ink); transition: transform .15s; }
+.gh-hn-disc.up { transform: translateY(-18px); box-shadow: 0 6px 0 rgba(0,0,0,.15); }
+.gh-hn-disc.d1 { background: #F4A7C3; } .gh-hn-disc.d2 { background: #F7C548; } .gh-hn-disc.d3 { background: #8CCB6A; } .gh-hn-disc.d4 { background: #6BB8E0; } .gh-hn-disc.d5 { background: #B48CDE; }
+.gh-hn-label { position: absolute; bottom: 4px; left: 0; right: 0; text-align: center; font-size: 16px; }
+
+/* truth tellers and liars */
+.gh-tf { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+.gh-tf-card { background: #fff; border: 3px solid var(--ink); border-radius: 16px; padding: 10px 14px; display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; align-items: center; }
+.gh-tf-card.bad { border-color: var(--red); background: #FFF1EE; }
+.gh-tf-card.tip { box-shadow: 0 0 0 3px #2E9E3A; }
+.gh-tf-who { display: flex; align-items: center; gap: 8px; grid-row: span 2; flex-direction: column; }
+.gh-tf-av { width: 44px; height: 44px; border-radius: 50%; background: #B48CDE; color: #fff; font-weight: 800; font-size: 21px; display: grid; place-items: center; border: 2px solid var(--ink); }
+.gh-tf-say { margin: 0; font-size: 18px; font-weight: 700; }
+.gh-tf-say small { display: block; font-weight: 600; color: var(--muted); font-size: 13px; }
+.gh-tf-pick { justify-self: start; }
+.gh-tf-pick .seg { font-size: 15px; padding: 6px 12px; min-height: 42px; }
+.gh-tf-go { display: block; margin: 0 auto; }
+
+/* gallery */
+.gh-gal { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
+.gh-gal li { background: #fff; border: 2px solid var(--line); border-radius: 12px; padding: 8px 4px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 104px; }
+.gh-gal li.locked { background: #F5EEE1; }
+.gh-gal-art { min-height: 72px; display: flex; align-items: center; justify-content: center; }
+.gh-gal-art b { font-size: 34px; color: #C9B48A; }
+.gh-gal small { font-size: 12px; line-height: 1.2; }
+
+/* sandbox */
+.gh-sandbox .segmented { margin: 4px 0 14px; }
+.gh-sb-sizes { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.gh-sb-sizes .seg { font-size: 15px; padding: 6px 10px; min-height: 42px; }
+.gh-sb-pal { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+.gh-sb-col { width: 40px; height: 40px; border-radius: 50%; border: 3px solid var(--ink); cursor: pointer; font-size: 18px; background: #fff; }
+.gh-sb-col.sel { box-shadow: 0 0 0 3px var(--yellow), 0 0 0 5px var(--ink); }
+.gh-sb-grid { --c: min(36px, calc((100vw - 44px) / var(--n))); display: grid; grid-template-columns: repeat(var(--n), var(--c)); grid-auto-rows: var(--c); width: max-content; margin: 0 auto 12px; border: 3px solid var(--ink); background: #fff; touch-action: none; user-select: none; -webkit-user-select: none; }
+.gh-sb-cell { border-right: 1px solid #E3D6BB; border-bottom: 1px solid #E3D6BB; cursor: pointer; }
+.gh-sb-result { margin: 12px 0; }
+.gh-sb-result .row, .gh-sb-load .row { gap: 8px; flex-wrap: wrap; align-items: center; }
+.gh-sb-code { flex: 1; min-width: 0; width: 100%; max-width: 420px; font-family: ui-monospace, Consolas, 'Courier New', monospace; font-size: 15px; padding: 10px 12px; border: 3px solid var(--ink); border-radius: 12px; }
+.gh-sb-result .btn.primary { margin-top: 10px; }
+.gh-sb-load { margin-top: 18px; }
+.gh-sb-load h2 { font-size: 19px; margin: 0 0 8px; }
+
+@media (max-width: 520px) {
+  .gh-inner { padding: 10px 12px 28px; }
+  .gh-bob { width: 52px; height: 52px; }
+  .gh-say { font-size: 15px; }
+  .gh-lg thead th { min-width: 44px; font-size: 12px; }
+  .gh-lg-cell { min-width: 40px; height: 40px; font-size: 21px; }
+  .gh-lg tbody th { font-size: 14px; padding: 0 5px; }
+  .gh-tf-card { grid-template-columns: 1fr; }
+  .gh-tf-who { flex-direction: row; grid-row: auto; }
+}

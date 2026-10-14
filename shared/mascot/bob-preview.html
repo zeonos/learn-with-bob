@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bob – maskot-oversigt</title>
+<style>
+  body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; margin: 0; padding: 24px 16px; background: #FFF9EC; color: #4A2C17; }
+  h1 { margin: 0 0 4px; font-size: 28px; }
+  h2 { margin: 32px 0 12px; font-size: 20px; }
+  p { margin: 0 0 16px; max-width: 60ch; }
+  .grid { display: flex; flex-wrap: wrap; gap: 16px; }
+  figure { margin: 0; background: #fff; border: 2px solid #F0DDB0; border-radius: 16px; padding: 12px 12px 8px; text-align: center; }
+  figcaption { font-size: 14px; margin-top: 4px; }
+  code { background: #F7EBCB; padding: 1px 5px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<h1>Bob</h1>
+<p>Alle udtryk og outfits, tegnet af <code>bob.js</code>. Brug <code>Bob.svg({ expression, outfit })</code> i spillene.</p>
+
+<h2>Udtryk</h2>
+<div class="grid" id="expressions"></div>
+
+<h2>Outfits</h2>
+<div class="grid" id="outfits"></div>
+
+<h2>Ikon (hoved)</h2>
+<div class="grid" id="icons"></div>
+
+<script src="bob.js"></script>
+<script>
+  var names = {
+    'default': 'Standard', happy: 'Glad', hello: 'Hej', thinking: 'Tænker', cheering: 'Jubler',
+    surprised: 'Overrasket', encouraging: 'Opmuntrende', waiting: 'Venter',
+    none: 'Ingen', bag: 'Taske', cape: 'Regnestorm', explorer: 'Ordjægeren', lab: 'Laboratoriet',
+    pilot: 'Verdensrejsen', tools: 'Robotkoden'
+  };
+  function card(parent, svg, caption) {
+    var f = document.createElement('figure');
+    f.innerHTML = svg + '<figcaption>' + caption + '</figcaption>';
+    document.getElementById(parent).appendChild(f);
+  }
+  Bob.expressions.forEach(function (e) { card('expressions', Bob.svg({ expression: e, size: 200 }), names[e] + ' <code>' + e + '</code>'); });
+  Bob.outfits.forEach(function (o) { card('outfits', Bob.svg({ outfit: o, size: 200 }), names[o] + ' <code>' + o + '</code>'); });
+  [128, 64, 48, 32].forEach(function (s) { card('icons', Bob.svg({ crop: 'head', size: s }), s + ' px'); });
+</script>
+</body>
+</html>

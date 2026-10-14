@@ -1,0 +1,117 @@
+/* Verdensrejsen */
+.vr-route { background: #E6F4FC; }
+.vr-route.next { background: #FFF1C4; }
+
+/* passport */
+.vr-stamps { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 170px)); gap: 14px; margin: 8px 0 22px; max-width: 900px; }
+.vr-stamp { position: relative; aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 19%; gap: 2px; transform: rotate(-4deg); color: #2F5E8C; }
+.vr-stamp:nth-child(2n) { transform: rotate(3deg); }
+.vr-stamp > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.vr-stamp strong { font-size: 13px; line-height: 1.15; position: relative; hyphens: auto; overflow-wrap: anywhere; }
+.vr-stamp small { font-size: 12px; position: relative; }
+.vr-stamp.s1 { color: #A23B2E; } .vr-stamp.s2 { color: #3F7A36; } .vr-stamp.s3 { color: #7A4FA0; } .vr-stamp.s4 { color: #B0661A; }
+.vr-stamp .stars { position: relative; }
+.vr-fact { display: flex; flex-direction: column; gap: 2px; min-height: 3.4em; font-size: 18px; margin: 0 0 12px; padding: 10px 14px; border-radius: 14px; background: #fff; border: 2px solid var(--line); max-width: 520px; }
+.vr-fact strong { font-size: 20px; }
+.vr-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.vr-chip { border: 2px solid #2F7DB3; background: #E6F4FC; color: #184A6E; border-radius: 999px; padding: 6px 14px; font-weight: 700; font-size: 17px; cursor: pointer; min-height: 40px; }
+
+/* play layout: map on top, task below (side by side on wide screens) */
+.vr-play { height: 100vh; height: 100dvh; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; background: var(--bg); }
+.vr-play > .rs-hud { grid-column: 1 / -1; }
+.vr-stage { position: relative; min-height: 0; overflow: hidden; background: #9FD3EE; }
+.vr-side { padding: 12px 16px calc(14px + env(safe-area-inset-bottom)); overflow: auto; max-height: 46vh; border-top: 3px solid var(--ink); background: var(--bg); }
+.vr-play.tapmode .vr-side { max-height: 30vh; }
+@media (min-width: 900px) and (min-aspect-ratio: 5/4) {
+  .vr-play { grid-template-columns: minmax(0, 1fr) clamp(290px, 30vw, 380px); grid-template-rows: auto minmax(0, 1fr); }
+  .vr-side, .vr-play.tapmode .vr-side { max-height: none; border-top: 0; border-left: 3px solid var(--ink); padding-top: 18px; }
+}
+.vr-prompt { display: flex; flex-direction: column; gap: 2px; margin-bottom: 10px; }
+.vr-prompt strong { font-size: clamp(20px, 3.6vw, 26px); line-height: 1.25; }
+.vr-prompt span { color: var(--muted); font-weight: 700; }
+.vr-taphint { margin: 0 0 8px; }
+
+/* map */
+.vr-map { position: absolute; inset: 0; }
+.vr-svg { width: 100%; height: 100%; display: block; touch-action: none; user-select: none; -webkit-user-select: none; cursor: crosshair; }
+.vr-svg path, .vr-svg line { vector-effect: non-scaling-stroke; }
+.vr-water { fill: #9FD3EE; }
+.vr-bg path { fill: #E7E1CD; stroke: #B9AE8F; stroke-width: .8; }
+.vr-land path { fill: #F6E7B2; stroke: #8C6B3F; stroke-width: 1; transition: fill .2s; }
+.map-world .vr-land path, .map-europe .vr-land path { stroke-width: .7; }
+.vr-play.tapmode .vr-land path:hover { fill: #FBD98A; }
+.vr-land path.hl-ask { fill: #F7C548; stroke: var(--ink); stroke-width: 2; }
+.vr-land path.hl-ok { fill: #8FD18A; stroke: #2E6E2A; stroke-width: 2; }
+.vr-nature .vr-range { fill: rgba(140, 92, 52, .45); stroke: #6E4523; stroke-width: 1; }
+.vr-nature .vr-desert { fill: rgba(230, 170, 60, .5); stroke: #B57A1F; stroke-width: 1; stroke-dasharray: 3 2; }
+.vr-nature .vr-river { fill: none; stroke: #1F6FB2; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.vr-nature .hl-ok { fill: rgba(63, 160, 58, .6); stroke: #2E6E2A; stroke-width: 2.5; }
+.vr-nature .vr-river.hl-ok { fill: none; stroke: #2E9E2A; stroke-width: 4.5; }
+.vr-mark { pointer-events: none; }
+.vr-mark .vr-dot { fill: #fff; stroke: var(--ink); stroke-width: 2.5; }
+.vr-mark.ok .vr-dot { fill: #4FB548; }
+.vr-mark.bad .vr-dot { fill: #E2574C; }
+.vr-mark.target .vr-dot { fill: #F7C548; stroke-width: 3; }
+.vr-mark.target { animation: vrpulse 1s ease-out; }
+.vr-label { font: 800 15px var(--font); fill: var(--ink); stroke: #fff; stroke-width: 4px; paint-order: stroke; stroke-linejoin: round; }
+.vr-line { stroke: var(--ink); stroke-width: 2; stroke-dasharray: 6 5; }
+.vr-plane { pointer-events: none; transition: opacity .3s; filter: drop-shadow(0 3px 2px rgba(0,0,0,.3)); }
+@keyframes vrpulse { 0% { opacity: 0; } 100% { opacity: 1; } }
+
+.vr-zoom { position: absolute; right: 10px; top: 10px; display: flex; flex-direction: column; gap: 8px; z-index: 3; }
+.vr-zoom button { width: 48px; height: 48px; border-radius: 14px; border: 3px solid var(--ink); background: #fff; font-size: 26px; font-weight: 800; color: var(--ink); cursor: pointer; box-shadow: 0 3px 0 var(--ink); display: grid; place-items: center; padding: 0; }
+.vr-zoom button svg { width: 24px; height: 24px; }
+.vr-zoom button:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+
+.vr-north { position: absolute; left: 10px; top: 10px; width: 40px; height: 52px; z-index: 2; pointer-events: none; background: rgba(255,255,255,.75); border-radius: 12px; border: 2px solid var(--ink); }
+.vr-north svg { width: 100%; height: 100%; display: block; }
+.vr-north text { font: 900 12px var(--font); fill: var(--ink); }
+.vr-bobrow { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; min-height: 64px; }
+.vr-bob { flex: none; width: 56px; aspect-ratio: 240 / 300; pointer-events: none; }
+.vr-bob svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 3px 3px rgba(0,0,0,.2)); }
+.vr-bob.react { animation: vrhop .5s ease-out; }
+@keyframes vrhop { 35% { transform: translateY(-8px); } }
+.vr-bubble {
+  position: relative; flex: 1; background: #fff; border: 3px solid var(--ink); border-radius: 16px; padding: 8px 12px;
+  font-weight: 700; font-size: 16px; line-height: 1.3; opacity: 0; transform: translateX(-6px); transition: opacity .2s, transform .2s;
+}
+.vr-bubble::before { content: ''; position: absolute; left: -11px; top: 50%; margin-top: -8px; border: 8px solid transparent; border-right: 10px solid var(--ink); border-left: 0; }
+.vr-bubble:empty { visibility: hidden; }
+.vr-bubble.show { opacity: 1; transform: none; }
+
+/* answers */
+.vr-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.vr-opt {
+  min-height: 56px; padding: 8px 12px; border-radius: 16px; border: 3px solid var(--ink); background: #fff; font-size: clamp(17px, 2.6vw, 21px);
+  font-weight: 800; color: var(--ink); cursor: pointer; box-shadow: 0 4px 0 var(--ink);
+}
+.vr-opt:active, .vr-dir:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+.vr-opt.right, .vr-dir.right { background: #BFE3B4; border-color: #2E6E2A; box-shadow: 0 4px 0 #2E6E2A; animation: pop .45s; }
+.vr-opt.wrong, .vr-dir.wrong { background: #FBE1DD; border-color: var(--red); color: var(--red); box-shadow: 0 4px 0 var(--red); }
+.vr-opt:disabled, .vr-dir:disabled { cursor: default; }
+.vr-rose { display: grid; grid-template-columns: repeat(3, minmax(0, 92px)); gap: 8px; justify-content: center; }
+.vr-dir { aspect-ratio: 1.25; border-radius: 16px; border: 3px solid var(--ink); background: #fff; color: var(--ink); cursor: pointer; box-shadow: 0 4px 0 var(--ink); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2px; }
+.vr-dir strong { font-size: 24px; line-height: 1; }
+.vr-dir small { font-size: 12px; font-weight: 700; }
+.vr-rose-c { display: grid; place-items: center; font-size: 30px; color: var(--muted); }
+.vr-clues { margin: 0 0 12px; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.vr-clues li { background: #fff; border: 2px solid var(--line); border-radius: 14px; padding: 8px 12px; font-size: 17px; line-height: 1.35; }
+.vr-clues li.enter { animation: pop .4s; }
+.vr-clue-no { display: block; font-size: 13px; font-weight: 800; color: #2F7DB3; text-transform: uppercase; letter-spacing: .04em; }
+.vr-feedback { margin-top: 12px; display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+.vr-feedback:empty { display: none; }
+.vr-factcard { display: flex; flex-direction: column; gap: 2px; padding: 10px 14px; border-radius: 14px; background: #E6F4FC; border: 2px solid #9CCBE8; font-size: 16px; }
+.vr-factcard strong { font-size: 19px; }
+.vr-next { min-width: 160px; }
+@media (max-width: 520px) {
+  .vr-options { gap: 8px; }
+  .vr-opt { min-height: 50px; }
+  .vr-bubble { font-size: 15px; padding: 6px 10px; }
+  .vr-bobrow { min-height: 56px; margin-bottom: 6px; }
+  .vr-bob { width: 46px; }
+  .vr-zoom button { width: 42px; height: 42px; }
+  .vr-dir { aspect-ratio: 1.7; }
+  .vr-dir strong { font-size: 20px; }
+}
+@media (prefers-reduced-motion: reduce) { .vr-bob.react, .vr-clues li.enter, .vr-mark.target { animation: none; } }
+@media (min-width: 900px) and (min-aspect-ratio: 5/4) { .vr-bob { width: 92px; } .vr-bobrow { min-height: 116px; } .vr-bubble { font-size: 17px; } }

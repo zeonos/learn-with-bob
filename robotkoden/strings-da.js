@@ -1,0 +1,97 @@
+/* Danske tekster til Robotkoden. Rettes her, ikke i koden. (Banernes titler og tips står i levels.js.) */
+window.STR = window.STR || {};
+window.STR.rk = {
+  title: 'Robotkoden',
+  tagline: 'Byg et program, der får robotten hen til ladestationen.',
+  next: 'Næste',
+  levels: 'Baner',
+  buildOwn: 'Byg din egen bane',
+  playShared: 'Spil en delt bane',
+
+  // blocks
+  blocks: {
+    frem: 'Frem',
+    venstre: 'Drej venstre',
+    hojre: 'Drej højre',
+    gentag: 'Gentag',
+    gentagTimes: 'gange',
+    indtil: 'Gentag indtil målet',
+    hvis: 'Hvis der er vej',
+    ellers: 'ellers',
+    kald: 'Kør funktion'
+  },
+  cond: { frem: 'frem', venstre: 'til venstre', hojre: 'til højre' },
+  quickQ: 'Robotten står på det grønne felt og kigger i pilens retning. Den kører programmet. Hvor ender den?',
+  quickRepeat: 'Gentag {n} gange: {blocks}',
+  quickHint: 'Følg robotten ét trin ad gangen med fingeren. Husk, at den drejer på stedet uden at flytte sig.',
+  quickExplain: 'Robotten ender på felt {x}.',
+  program: 'Program',
+  func: 'Funktion',
+  addHere: 'Tryk eller træk en blok hertil',
+  emptyInside: 'Tom – tryk her, og vælg en blok',
+  moveUp: 'Flyt op',
+  moveDown: 'Flyt ned',
+  remove: 'Fjern blok',
+  less: 'Færre',
+  more: 'Flere',
+  showCode: 'Vis som kode',
+  showBlocks: 'Vis blokke',
+  clearAll: 'Ryd alt',
+
+  // run
+  run: 'Kør',
+  stop: 'Stop',
+  step: 'Et trin',
+  fast: 'Hurtig',
+  slow: 'Rolig',
+  tip: 'Tip',
+  showSolution: 'Se Bobs forslag',
+  solutionShown: 'Her er mit forslag. Kør det, og se, hvordan det virker.',
+
+  // status line
+  blocksUsed: 'Blokke: {n}',
+  blocksLimit: 'Blokke: {n} af højst {max}',
+  batteriesGot: 'Batterier: {n} af {max}',
+  limitReached: 'Du må højst bruge {max} blokke på denne bane.',
+  noFuncInFunc: 'Kør funktion kan ikke stå inde i selve funktionen.',
+
+  // results
+  crash: ['Av! Robotten kørte ind i en mur.', 'Bump! Der er en mur. Se på programmet igen.'],
+  end: 'Programmet er slut, men robotten er ikke ved ladestationen endnu.',
+  limit: 'Robotten blev ved og ved. Mangler der noget, så den kan komme frem?',
+  empty: 'Programmet er tomt. Tryk på en blok for at sætte den ind.',
+  goal: 'Robotten nåede ladestationen!',
+  starGoal: 'Robotten nåede ladestationen',
+  starBatteries: 'Alle batterier er samlet ({n} af {max})',
+  starBatteriesMiss: 'Batterier samlet: {n} af {max}',
+  starShort: 'Kort program: {n} blokke (højst {max})',
+  starShortMiss: 'Programmet brugte {n} blokke. Kan du klare det med {max}?',
+  helped: 'Du brugte Bobs forslag, så denne gang er der én stjerne.',
+  resultTitle: ['Prøv igen!', 'Du klarede det!', 'Godt programmeret!', 'Perfekt kode!'],
+  tryAgain: 'Prøv igen',
+  nextLevel: 'Næste bane',
+  toMap: 'Til oversigten',
+  debugIntro: 'Programmet er allerede bygget, men der er en fejl. Kør det, og se, hvor det går galt.',
+  bobStart: ['Hjælp robotten hen til ladestationen!', 'Lad os bygge et program!'],
+
+  // editor
+  editorTitle: 'Byg din egen bane',
+  editorHelp: 'Vælg et værktøj, og tryk på felterne. Tryk på robotten igen for at vende den.',
+  tools: { floor: 'Gulv', wall: 'Mur', battery: 'Batteri', goal: 'Mål', robot: 'Robot' },
+  allowBlocks: 'Blokke, der må bruges',
+  levelName: 'Banens navn',
+  levelNamePh: 'Min bane',
+  testLevel: 'Prøv banen',
+  shareLevel: 'Del banen',
+  shareHelp: 'Send koden til en ven. De kan spille banen under »Spil en delt bane«.',
+  copy: 'Kopiér',
+  copied: 'Kopieret',
+  needRobotGoal: 'Banen skal have én robot og ét mål.',
+  pasteCode: 'Indsæt koden her',
+  play: 'Spil',
+  badCode: 'Koden kunne ikke læses. Tjek, at hele koden er med.',
+  ownLevel: 'Egen bane',
+  backToEditor: 'Tilbage til byggeren',
+
+  reportHead: ['Verden', 'Baner klaret', 'Stjerner']
+};

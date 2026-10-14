@@ -1,0 +1,93 @@
+/* Netdetektiven – reuses Ordjægeren's play layout (oj-*) and adds the detective office, messages, password builder */
+.nd-route { background: #E7EEF6; }
+.nd-route.next { background: #FFF1C4; }
+.nd-fiction { text-align: center; margin-top: 18px; font-size: 14px; }
+.nd-scene { background: linear-gradient(#3A4A5E, #56677D); }
+.nd-board { position: absolute; left: 34%; right: 4%; top: 12%; bottom: 14%; background: #C89B63; border: 8px solid #7A5230; border-radius: 6px; box-shadow: inset 0 0 0 2px rgba(0,0,0,.15), 0 6px 0 rgba(0,0,0,.25);
+  background-image: radial-gradient(rgba(0,0,0,.08) 1px, transparent 1.5px); background-size: 7px 7px; }
+.nd-note { position: absolute; width: 22%; height: 34%; background: #FFF6C9; box-shadow: 0 3px 4px rgba(0,0,0,.25); }
+.nd-note::after { content: ''; position: absolute; left: 14%; right: 14%; top: 30%; height: 40%; background: repeating-linear-gradient(#9DB4C9 0 3px, transparent 3px 10px); }
+.nd-note.n1 { left: 8%; top: 14%; transform: rotate(-4deg); transform-origin: 50% 0; }
+.nd-note.n2 { left: 42%; top: 46%; transform: rotate(3deg); transform-origin: 50% 0; background: #DDF1FF; }
+.nd-note.n3 { left: 72%; top: 12%; transform: rotate(-2deg); transform-origin: 50% 0; background: #FFE1E1; }
+/* pins sit on the middle of each note's top edge; the notes turn around that point, so the pins and the thread always meet */
+.nd-thread { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.nd-pin { position: absolute; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: var(--red); box-shadow: 0 1px 2px rgba(0,0,0,.4); }
+.nd-pin.nd-p1 { left: 19%; top: 14%; } .nd-pin.nd-p2 { left: 53%; top: 46%; } .nd-pin.nd-p3 { left: 83%; top: 12%; }
+.nd-bob { left: 17%; top: 97%; }
+.nd-scene .oj-bubble { left: calc(17% + 58px); top: auto; bottom: calc(3% + min(74%, 230px) * 0.94 - 30px); } /* just right of Bob's head, wherever the scene is */
+@media (max-width: 520px) { .nd-board { left: 40%; } .nd-bob { left: 21%; } .nd-scene .oj-bubble { left: calc(21% + 36px); right: 3%; max-width: none; top: auto; bottom: calc(3% + 60% * 0.94 - 26px); font-size: 15px; } }
+
+.nd-card { background: #fff; border: 3px solid var(--ink); border-radius: 16px; padding: 12px 16px; margin: 0 0 12px; font-size: clamp(18px, 2.8vw, 22px); text-align: center; box-shadow: 0 3px 0 var(--ink); }
+.nd-two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.nd-two .oj-opt { text-align: center; }
+.nd-pw .oj-opt { font-family: ui-monospace, Consolas, 'Courier New', monospace; font-size: clamp(16px, 2.6vw, 20px); overflow-wrap: anywhere; min-height: 80px; }
+.nd-verdict .oj-opt[data-v="safe"] { background: #E9F6E5; }
+.nd-verdict .oj-opt[data-v="scam"] { background: #FCE9E6; }
+.nd-adult { display: block; margin: 12px auto 0; }
+
+/* message */
+.nd-mail { background: #fff; border: 3px solid var(--ink); border-radius: 18px; padding: 12px 16px 6px; margin: 0 0 12px; box-shadow: 0 3px 0 var(--ink); }
+.nd-mail-head { display: flex; gap: 10px; align-items: center; border-bottom: 2px solid var(--line); padding-bottom: 8px; }
+.nd-mail-head > div { display: flex; flex-direction: column; min-width: 0; }
+.nd-avatar { flex: none; width: 40px; height: 40px; border-radius: 50%; background: #56677D; color: #fff; font-weight: 800; display: grid; place-items: center; font-size: 19px; }
+.nd-addr { font-family: ui-monospace, Consolas, 'Courier New', monospace; font-size: 14px; color: var(--muted); overflow-wrap: anywhere; }
+.nd-mail h3 { margin: 10px 0 4px; font-size: 19px; }
+.nd-mail p { margin: 0 0 8px; font-size: 18px; line-height: 1.45; overflow-wrap: anywhere; }
+.nd-inspect { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0 0 8px; }
+.nd-inspect > span { font-weight: 800; color: var(--muted); }
+.nd-chip { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 6px 14px; border-radius: 22px; border: 2px solid #56677D; background: #E7EEF6; color: var(--ink); font-weight: 700; font-size: 16px; cursor: pointer; }
+.nd-chip svg { width: 20px; height: 20px; }
+.nd-chip.on { background: #FFF1C4; border-color: #B58A1A; }
+.nd-clues { list-style: none; padding: 0; margin: 0 0 12px; display: flex; flex-direction: column; gap: 6px; }
+.nd-clues li { background: #FFF8DF; border-left: 5px solid #B58A1A; border-radius: 8px; padding: 6px 10px; animation: ojin .3s ease-out; }
+.oj-rule ul { margin: 6px 0 0; padding-left: 20px; }
+
+/* password */
+.nd-pwlabel { font-weight: 800; color: var(--muted); font-size: 14px; text-transform: uppercase; letter-spacing: .05em; }
+.nd-pwbox { font-family: ui-monospace, Consolas, 'Courier New', monospace; font-size: clamp(18px, 3vw, 24px); font-weight: 700; background: #1F2A36; color: #9FF0B5; border-radius: 12px; padding: 12px 14px; margin: 4px 0 8px; min-height: 52px; overflow-wrap: anywhere; }
+.nd-pwbox.empty { color: #8796A8; font-family: var(--font); font-weight: 600; }
+.nd-pwbox.wrong { outline: 4px solid var(--red); }
+.nd-meter { display: flex; gap: 6px; align-items: center; margin-bottom: 12px; min-height: 22px; }
+.nd-meter i { flex: 0 0 48px; height: 12px; border-radius: 6px; background: #E5DCCB; }
+.nd-meter i.on.s0 { background: var(--red); } .nd-meter i.on.s1 { background: #E39B2F; } .nd-meter i.on.s2 { background: #7DBB4C; } .nd-meter i.on.s3 { background: var(--green); }
+.nd-meter span { font-weight: 800; margin-left: 6px; }
+.nd-cards { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 14px; }
+.nd-word { min-height: 52px; padding: 8px 16px; border-radius: 12px; border: 3px solid var(--ink); background: #fff; font-weight: 800; font-size: 18px; color: var(--ink); cursor: pointer; box-shadow: 0 3px 0 var(--ink); }
+.nd-word:disabled { opacity: .45; cursor: default; }
+
+/* share */
+.nd-item { font-size: clamp(20px, 3.4vw, 26px); }
+.nd-bins { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.nd-bin { min-width: 0; font-size: 18px; padding: 10px 8px; min-height: 72px; }
+.nd-bin.bin-fint { background: #E9F6E5; } .nd-bin.bin-spoerg { background: #FFF3D1; } .nd-bin.bin-aldrig { background: #FCE9E6; }
+
+/* sources, images */
+.nd-claim { background: #E7EEF6; border-radius: 14px; padding: 10px 14px; margin: 0 0 12px; display: flex; flex-direction: column; gap: 2px; }
+.nd-claim span { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: #56677D; }
+.nd-claim strong { font-size: 20px; }
+.nd-claim em { color: var(--muted); }
+.nd-page { display: flex; flex-direction: column; gap: 4px; }
+.nd-page span { font-weight: 600; font-size: 16px; color: var(--muted); }
+.nd-photo { margin: 0 0 12px; display: flex; gap: 12px; align-items: center; background: #fff; border: 3px solid var(--ink); border-radius: 16px; padding: 10px; box-shadow: 0 3px 0 var(--ink); }
+.nd-photo-frame { flex: none; width: 76px; height: 76px; border-radius: 10px; background: linear-gradient(135deg, #9DB4C9, #D8C3E8); display: grid; place-items: center; color: #fff; }
+.nd-photo-frame svg { width: 40px; height: 40px; }
+.nd-photo figcaption { font-size: 17px; line-height: 1.4; }
+
+/* feed */
+.nd-feed { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0 0 14px; }
+.nd-post { min-height: 64px; border-radius: 10px; padding: 8px; color: #fff; font-weight: 800; display: flex; flex-direction: column; justify-content: space-between; text-shadow: 0 1px 2px rgba(0,0,0,.4); }
+.nd-post b { font-size: 13px; }
+.nd-post.liked { outline: 3px solid #FFE14D; }
+.t-Fodbold { background: #3F8A3A; } .t-Katte { background: #C0728E; } .t-Gaming { background: #6C5A9E; } .t-Mad { background: #D07A2A; } .t-Musik { background: #2F7DB3; } .t-Natur { background: #5B8C6E; }
+
+/* casebook */
+.nd-casebook { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.nd-case { position: relative; display: flex; flex-direction: column; gap: 4px; border-left: 8px solid var(--green); }
+.nd-case.is-scam { border-left-color: var(--red); }
+.nd-case p { margin: 4px 0 0; }
+.nd-from { font-family: ui-monospace, Consolas, 'Courier New', monospace; font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+.nd-stamp { align-self: flex-start; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; padding: 2px 8px; border-radius: 6px; background: #E9F6E5; color: var(--green); }
+.is-scam .nd-stamp { background: #FCE9E6; color: var(--red); }
+@media (max-width: 520px) { .nd-two { grid-template-columns: 1fr; } .nd-bins { grid-template-columns: 1fr; } .nd-bin { min-height: 56px; } .nd-photo-frame { width: 56px; height: 56px; } }
+.nd-body .btn:disabled { opacity: .45; cursor: default; box-shadow: none; }

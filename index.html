@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lær med Bob</title>
+<meta name="description" content="Lærerige spil for børn fra 8 til 14 år – på dansk, uden reklamer og uden login.">
+<meta name="theme-color" content="#F7C548">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="shared/icons/icon-192.png">
+<link rel="apple-touch-icon" href="shared/icons/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Lær med Bob">
+<link rel="stylesheet" href="shared/ui.css">
+<link rel="stylesheet" href="regnestorm/regnestorm.css"><!-- altid: alle spil bruger dens knapper og dialoger -->
+</head>
+<body>
+<div id="app"></div>
+<noscript><p style="padding:16px">Spillene kræver, at JavaScript er slået til i browseren.</p></noscript>
+
+<!-- fælles -->
+<script src="shared/strings-da.js"></script>
+<script src="shared/mascot/bob.js"></script>
+<script src="shared/games.js"></script>
+<script src="shared/core.js"></script>
+<script src="shared/daily.js"></script>
+<script src="shared/badges.js"></script>
+<script src="shared/hub.js"></script>
+<!-- spillene hentes, når de skal bruges (shared/games.js) -->
+<script src="shared/start.js"></script>
+</body>
+</html>
