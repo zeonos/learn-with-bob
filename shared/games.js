@@ -3,6 +3,8 @@
  * Spillene hentes først, når de skal bruges (Core.loadGame). Titler og fag står i shared/strings-da.js.
  * regnestorm.css hentes altid (index.html), fordi alle spil bruger dens knapper og dialoger.
  * Husk også at tilføje nye filer i sw.js.
+ * Sprog (shared/i18n.js): et spil med langs: ['da', 'en'] henter også strings-en.js lige efter strings-da.js, når siden er
+ * på engelsk, og en fil kan skrives som { da: 'x.js', en: 'x-en.js' }, hvis indholdet er forskelligt fra land til land.
  */
 (typeof window !== 'undefined' ? window : global).GAMES = [
   { id: 'regnestorm', group: 'matematik', css: ['regnestorm/regnestorm.css'], js: ['regnestorm/strings-da.js', 'regnestorm/problems.js', 'regnestorm/game.js'] },

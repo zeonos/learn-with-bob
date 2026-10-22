@@ -103,6 +103,15 @@ Apache (`.htaccess` in the folder, needs mod_headers): `Header set Content-Secur
 
 Plain HTML, CSS and vanilla JavaScript (ES5 style, classic scripts): no build step, no libraries, no network calls. Everything is drawn as inline SVG and sounds are made with Web Audio. All text a child sees is Danish and lives in each game's `strings-da.js`.
 
+### Languages
+
+The games are Danish, and an English (US) version is on its way (Phase 6). `shared/i18n.js` picks the language when the page opens: a `?lang=en` link first, then the last choice on the device, then the browser's language (any Danish in the browser's list means Danish). Each player keeps their own language, and choosing a player opens the page in that player's language.
+
+- Every game's texts are in `strings-da.js`. A `strings-en.js` next to it calls `I18N.add('en', '<prefix>', { … })` with the translated keys, which are laid over the Danish ones.
+- A game lists `langs: ['da', 'en']` in `shared/games.js` when its English is complete. A file whose content differs by country can be given as `{ da: 'x.js', en: 'x-en.js' }`.
+- `Core.fmt` writes numbers, money and dates the right way for the language (`3,5` / `3.5`, `12,50 kr.` / `$12.50`) and reads typed numbers in either style. Read-aloud uses an American voice in English.
+- A language is offered in the picker only when it is marked `ready` in `shared/i18n.js`. Until then, `?lang=en` shows a preview with a note at the top.
+
 ### Folders
 
 | Folder | Contents |
@@ -151,11 +160,12 @@ Plain HTML, CSS and vanilla JavaScript (ES5 style, classic scripts): no build st
 | `node tools/test-museet.js` | Makes every room thousands of times per band and re-computes each answer its own way (time, timeline order, runes with its own rune table, the scale, the English letter's times, the deduction): exactly one right answer; the story's clues clear exactly the innocent suspects; Danish spelling |
 | `node tools/test-opfinder.js` | Runs every machine again with an independently written set of rules, tries every placement of the toolbox parts (both rule sets must agree), counts the solutions, recomputes gear ratios, lever moments and pulley forces, share codes |
 | `node tools/check-pictures.js [preview.png]` | Checks that every picture can be solved line by line, and draws them all into one PNG |
+| `node tools/test-i18n.js` | Choosing the language, merging texts, number, money and date formats in both languages, every `strings-en.js` against its Danish file (same keys and {placeholders}, no Danish left, US spelling with hunspell `en_US`), and that the files are loaded and cached for offline play |
 | `node tools/test-badges-daily.js` | Every badge is reachable, only built games show badges, the streak rules over a simulated year (one rest day a week), the same tasks for the same day |
 | `node tools/build-verdensrejsen.js` | Rebuilds `verdensrejsen/maps.js` from Natural Earth (needs `mapshaper` and the Natural Earth files) |
 | `node tools/korrektur.js` | Writes the proof sheets `tools/korrektur-*.html` (one per game, plus `korrektur-maerker.html` for badges and the daily challenge) |
 | `node tools/looks-gallery.js` | Draws all of Bob's unlockable looks into one PNG for a visual check |
-| `node tools/e2e.js` / `e2e-robotkoden.js` / `e2e-ordjaegeren.js` / `e2e-verdensrejsen.js` / `e2e-laboratoriet.js` / `e2e-fase2.js` / `e2e-byggepladsen.js` / `e2e-lommepenge.js` / `e2e-taktslaget.js` / `e2e-tankespind.js` / `e2e-gaadehuset.js` / `e2e-labyrinten.js` / `e2e-raketbanen.js` / `e2e-museet.js` / `e2e-opfinder.js` / `e2e-hub.js` (hub, daily challenge, badges, every game's daily task, and that every title fits its card) | Play the games in a headless browser on desktop, phone and tablet sizes (needs Playwright) |
+| `node tools/e2e.js` / `e2e-robotkoden.js` / `e2e-ordjaegeren.js` / `e2e-verdensrejsen.js` / `e2e-laboratoriet.js` / `e2e-fase2.js` / `e2e-byggepladsen.js` / `e2e-lommepenge.js` / `e2e-taktslaget.js` / `e2e-tankespind.js` / `e2e-gaadehuset.js` / `e2e-labyrinten.js` / `e2e-raketbanen.js` / `e2e-museet.js` / `e2e-opfinder.js` / `e2e-i18n.js` (switching language, players with their own language, the preview) / `e2e-hub.js` (hub, daily challenge, badges, every game's daily task, and that every title fits its card) | Play the games in a headless browser on desktop, phone and tablet sizes (needs Playwright) |
 
 ### Adding a game
 

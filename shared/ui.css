@@ -246,3 +246,9 @@ td:not(:first-child), th:not(:first-child) { text-align: right; }
 .dress-art { height: 64px; display: grid; place-items: center; }
 .dress-art svg { max-height: 64px; width: auto; }
 @media (max-width: 620px) { .dress-wrap { flex-direction: column; align-items: center; } .dress-bob { position: static; } .dress-cats { width: 100%; } .cal-cell { min-height: 46px; } .cal-stamp svg { width: 22px; } .cal-rest { display: none; } }
+
+/* language: the Dansk | English picker on the player screens, and the note shown on a preview of an unfinished language */
+.lang-pick { align-self: flex-end; margin: 0 0 6px; }
+.lang-pick .seg { min-height: 44px; padding: 6px 14px; font-size: 15px; }
+.lang-preview { background: #3B3550; color: #FFFFFF; padding: 8px 16px; font-size: 14px; line-height: 1.4; text-align: center; }
+.lang-preview a { color: #FFE58A; font-weight: 700; }

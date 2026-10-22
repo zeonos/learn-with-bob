@@ -27,6 +27,42 @@
   var saveTimer = null;
   function saveSoon() { clearTimeout(saveTimer); saveTimer = setTimeout(save, 500); }
 
+  /* ---------- language (shared/i18n.js decides it when the page opens) ---------- */
+  function lang() { return (root.I18N && root.I18N.lang) || 'da'; }
+  function str() { return (root.STR && root.STR.core) || {}; }
+  // Numbers, money and dates written the way the child reads them: 3,5 and 1.000 in Danish, 3.5 and 1,000 in English.
+  var FMT = {
+    da: { dec: ',', group: '.', money: function (s) { return s + ' kr.'; } },
+    en: { dec: '.', group: ',', money: function (s) { return '$' + s; } }
+  };
+  function fmtOf(L) { return FMT[L || lang()] || FMT.da; }
+  // num(3.5) → '3,5' / '3.5'; num(2, 2) → '2,00'; thousands are grouped from 1000 (opts.group = false turns it off)
+  function num(x, decimals, opts) {
+    var f = fmtOf(opts && opts.lang), n = Number(x); if (!isFinite(n)) return String(x);
+    var neg = n < 0; n = Math.abs(n);
+    var s = decimals === undefined ? String(Math.round(n * 1e6) / 1e6) : n.toFixed(decimals);
+    if (/e/.test(s)) s = n.toFixed(decimals || 0);
+    var parts = s.split('.'), whole = parts[0];
+    if (!(opts && opts.group === false) && whole.length > 3) whole = whole.replace(/\B(?=(\d{3})+(?!\d))/g, f.group);
+    return (neg ? '-' : '') + whole + (parts[1] ? f.dec + parts[1] : '');
+  }
+  // money(12) → '12 kr.' / '$12'; money(12.5) → '12,50 kr.' / '$12.50'
+  function money(x, opts) { var n = Number(x); return fmtOf(opts && opts.lang).money(num(n, Math.round(n * 100) % 100 ? 2 : undefined, opts)); }
+  // date(new Date(2026, 9, 22)) → '22. oktober 2026' / 'October 22, 2026' (month names come from the texts)
+  function date(d, opts) {
+    d = d instanceof Date ? d : new Date(d);
+    var L = (opts && opts.lang) || lang(), m = (str().dailyMonths || [])[d.getMonth()] || String(d.getMonth() + 1);
+    return L === 'en' ? m + ' ' + d.getDate() + ', ' + d.getFullYear() : d.getDate() + '. ' + m + ' ' + d.getFullYear();
+  }
+  // Reads a typed number in either style: '3,5', '3.5', '1.000' (Danish) or '1,000' (English). NaN if it is not a number.
+  function parseNum(text, L) {
+    var s = String(text === undefined || text === null ? '' : text).replace(/[\s\u00a0]/g, '').replace(/[\u2212\u2013]/g, '-');
+    L = L || lang();
+    if (L === 'en' ? /^-?\d{1,3}(,\d{3})+(\.\d+)?$/.test(s) : /^-?\d{1,3}(\.\d{3})+(,\d+)?$/.test(s)) s = s.replace(L === 'en' ? /,/g : /\./g, '');
+    s = s.replace(',', '.');
+    return /^-?(\d+\.?\d*|\.\d+)$/.test(s) ? Number(s) : NaN;
+  }
+
   /* ---------- profiles ---------- */
   function profiles() { return data.profiles; }
   function profile(id) {
@@ -34,10 +70,10 @@
     for (var i = 0; i < data.profiles.length; i++) if (data.profiles[i].id === id) return data.profiles[i];
     return null;
   }
-  function createProfile(name, color, band) {
+  function createProfile(name, color, band, language) {
     var p = {
       id: 'p' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
-      name: name, color: color, band: band || 'M', created: Date.now(),
+      name: name, color: color, band: band || 'M', lang: language || lang(), created: Date.now(),
       settings: { sound: true, speechAuto: false }, time: {}
     };
     data.profiles.push(p);
@@ -47,6 +83,20 @@
     return p;
   }
   function selectProfile(id) { data.current = id; save(); }
+  // A player's language (players made before languages existed are Danish).
+  function profileLang(p) { return (p && p.lang) || 'da'; }
+  // Changes a player's language; if it is the player who is playing now, the page opens again in that language.
+  function setProfileLang(id, code, hash) {
+    var p = profile(id); if (!p) return;
+    p.lang = code; save();
+    if (p.id === data.current && root.I18N && code !== lang()) root.I18N.set(code, hash);
+  }
+  // Opens the game in this player's language (selecting a player from the list).
+  function usePlayer(id, hash) {
+    selectProfile(id);
+    var L = profileLang(profile(id));
+    if (root.I18N && L !== lang()) root.I18N.set(L, hash); else go(hash);
+  }
   function signOut() { data.current = null; save(); }
   function resetProfile(id) {
     data.progress[id] = {};
@@ -165,7 +215,7 @@
   }
 
   /* ---------- speech (the browser's own voices: Danish by default, English for Ordbroen) ---------- */
-  var voices = { da: null, en: null };
+  var voices = { da: null, en: null, 'en-US': null };
   function findVoice() {
     if (!('speechSynthesis' in root)) return null;
     var all = root.speechSynthesis.getVoices();
@@ -174,19 +224,23 @@
     voices.da = best(all.filter(function (v) { return /^da/i.test(v.lang); }));
     // English: prefer British, then any English voice
     voices.en = best(all.filter(function (v) { return /^en[-_]GB/i.test(v.lang); })) || best(all.filter(function (v) { return /^en/i.test(v.lang); }));
+    // American English for the English version of the games
+    voices['en-US'] = best(all.filter(function (v) { return /^en[-_]US/i.test(v.lang); })) || best(all.filter(function (v) { return /^en/i.test(v.lang); }));
     return voices.da;
   }
   if ('speechSynthesis' in root) {
     findVoice();
     root.speechSynthesis.addEventListener && root.speechSynthesis.addEventListener('voiceschanged', findVoice);
   }
-  function canSpeak(lang) { lang = lang || 'da'; if (!voices[lang]) findVoice(); return !!voices[lang]; }
-  function speak(text, lang) {
-    lang = lang || 'da';
-    if (!canSpeak(lang) || !text) return false;
+  // voice: 'da', 'en' (British, for the English that Danish children learn) or 'en-US'; none = the page's language
+  function voiceOf(v) { v = v || (root.I18N ? root.I18N.info().voice : 'da'); return voices.hasOwnProperty(v) ? v : 'da'; }
+  function canSpeak(v) { v = voiceOf(v); if (!voices[v]) findVoice(); return !!voices[v]; }
+  function speak(text, v) {
+    v = voiceOf(v);
+    if (!canSpeak(v) || !text) return false;
     root.speechSynthesis.cancel();
     var u = new SpeechSynthesisUtterance(text);
-    u.lang = lang === 'en' ? (voices.en.lang || 'en-GB') : 'da-DK'; u.voice = voices[lang]; u.rate = lang === 'en' ? 0.85 : 0.92;
+    u.lang = v === 'da' ? 'da-DK' : (voices[v].lang || (v === 'en' ? 'en-GB' : 'en-US')); u.voice = voices[v]; u.rate = v === 'da' ? 0.92 : v === 'en' ? 0.85 : 0.9;
     root.speechSynthesis.speak(u);
     return true;
   }
@@ -222,7 +276,7 @@
     for (var i = 0; i < (max || 3); i++) {
       s += '<svg class="star ' + (i < n ? 'on' : 'off') + ' ' + (cls || '') + '" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/></svg>';
     }
-    return '<span class="stars" role="img" aria-label="' + n + ' af ' + (max || 3) + ' stjerner">' + s + '</span>';
+    return '<span class="stars" role="img" aria-label="' + t(str().starsAria || '{n}/{max}', { n: n, max: max || 3 }) + '">' + s + '</span>';
   }
   function download(filename, text) {
     var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
@@ -247,13 +301,25 @@
       document.body.appendChild(s);
     });
   }
+  // The files of a game in the page's language. In shared/games.js a file can be { da: 'x.js', en: 'x-en.js' } (content
+  // that differs by country), and a game with langs: ['da', 'en'] also loads strings-en.js right after strings-da.js.
+  function sources(m, L) {
+    L = L || lang();
+    var out = [];
+    (m.js || []).forEach(function (src) {
+      if (src && typeof src === 'object') { out.push(src[L] || src.da); return; }
+      out.push(src);
+      if (L !== 'da' && (m.langs || []).indexOf(L) >= 0 && /strings-da\.js$/.test(src)) out.push(src.replace(/strings-da\.js$/, 'strings-' + L + '.js'));
+    });
+    return out;
+  }
   function loadGame(id) {
     if (games[id]) return Promise.resolve(games[id]);
     if (loading[id]) return loading[id];
     var m = manifest(id);
     if (!m) return Promise.reject(new Error('Ukendt spil ' + id));
     (m.css || []).forEach(loadCss);
-    loading[id] = (m.js || []).reduce(function (p, src) { return p.then(function () { return loadScript(src); }); }, Promise.resolve())
+    loading[id] = sources(m).reduce(function (p, src) { return p.then(function () { return loadScript(src); }); }, Promise.resolve())
       .then(function () { if (!games[id]) throw new Error(id + ' registrerede sig ikke'); return games[id]; })
       .catch(function (e) { delete loading[id]; throw e; });
     return loading[id];
@@ -339,6 +405,13 @@
   }
   function mountGame(app, g) { mounted = g; app.className = 'game-' + g.id; visit(g.id); g.mount(app); }
   function start() {
+    // The page follows the player's own language (unless a ?lang= link asked for another one, or a new player is being chosen).
+    var p = profile(), I = root.I18N;
+    if (I && p && !I.viaLink && (location.hash || '') !== '#/spillere' && profileLang(p) !== I.lang) { I.set(profileLang(p)); return; }
+    if (I && I.preview) {
+      var note = (I.info().previewNote) || '';
+      document.body.insertBefore(h('div', { class: 'lang-preview', role: 'note' }, [note + ' ', h('a', { href: '#', onclick: function (e) { e.preventDefault(); I.set('da'); } }, 'Dansk')]), document.body.firstChild);
+    }
     root.addEventListener('hashchange', route);
     // first tap unlocks audio on iOS/Safari
     root.addEventListener('pointerdown', function once() { audio(); root.removeEventListener('pointerdown', once); });
@@ -353,6 +426,9 @@
     // data
     profiles: profiles, profile: profile, createProfile: createProfile, selectProfile: selectProfile, signOut: signOut,
     resetProfile: resetProfile, deleteProfile: deleteProfile, gameData: gameData, addTime: addTime, setting: setting,
+    profileLang: profileLang, setProfileLang: setProfileLang, usePlayer: usePlayer,
+    // language and formats
+    lang: lang, fmt: { num: num, money: money, date: date, parse: parseNum }, sources: sources,
     save: save, saveSoon: saveSoon, storageOk: function () { return storageOk; },
     exportCode: exportCode, importCode: importCode,
     // media

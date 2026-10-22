@@ -5,7 +5,6 @@
   'use strict';
   var S = root.STR.core, Core = root.Core, h = Core.h, t = Core.t;
   var COLORS = ['#F7C548', '#6BB8E0', '#8DB36A', '#F2A28F', '#B48CDE', '#F39C4A'];
-  var COLOR_NAMES = ['Gul', 'Blå', 'Grøn', 'Lyserød', 'Lilla', 'Orange'];
 
   function avatar(p, size) {
     return h('span', { class: 'avatar', style: 'background:' + p.color + ';width:' + size + 'px;height:' + size + 'px;font-size:' + Math.round(size * 0.45) + 'px', 'aria-hidden': 'true' },
@@ -14,16 +13,27 @@
   function bandLabel(b) { return b === 'U' ? S.bandU + ' (' + S.bandUAge + ')' : S.bandM + ' (' + S.bandMAge + ')'; }
   function bob(expression, outfit, size) { return h('div', { class: 'bob', html: root.Bob.svg({ expression: expression, outfit: outfit, size: size }) }); }
   function storageWarning() { return Core.storageOk() ? null : h('p', { class: 'notice', role: 'status' }, S.storageWarn); }
+  // Dansk | English – only when more than one language can be chosen (see shared/i18n.js). Each name is in its own language.
+  function langPicker(hash) {
+    var I = root.I18N; if (!I) return null;
+    var list = I.available(); if (list.length < 2) return null;
+    return h('div', { class: 'segmented lang-pick', role: 'group', 'aria-label': S.language }, list.map(function (c) {
+      var on = c === I.lang;
+      return h('button', { type: 'button', class: 'seg' + (on ? ' sel' : ''), 'aria-pressed': on ? 'true' : 'false', lang: I.info(c).html,
+        onclick: function () { if (!on) { Core.play('click'); I.set(c, hash); } } }, I.info(c).name);
+    }));
+  }
 
   /* ---------- choose player ---------- */
   function showProfiles(app) {
     var list = Core.profiles();
     if (!list.length) return showNewProfile(app, false);
     var wrap = h('main', { class: 'screen center' }, [
+      langPicker('#/spillere'),
       h('div', { class: 'hero' }, [bob('hello', 'bag', 170), h('div', {}, [h('h1', {}, S.appName), h('p', { class: 'lead' }, S.whoPlays)])]),
       storageWarning(),
       h('div', { class: 'profile-list' }, list.map(function (p) {
-        return h('button', { class: 'profile-card', type: 'button', onclick: function () { Core.play('click'); Core.selectProfile(p.id); Core.go('#/hjem'); } },
+        return h('button', { class: 'profile-card', type: 'button', onclick: function () { Core.play('click'); Core.usePlayer(p.id, '#/hjem'); } },
           [avatar(p, 56), h('span', { class: 'pc-text' }, [h('strong', {}, p.name), h('small', {}, p.band === 'U' ? S.bandU : S.bandM)])]);
       })),
       h('button', { class: 'btn secondary', type: 'button', onclick: function () { showNewProfile(app, true); } }, '+ ' + S.newPlayer)
@@ -36,7 +46,7 @@
     var nameInput = h('input', { id: 'pname', type: 'text', maxlength: '20', autocomplete: 'off', placeholder: S.namePlaceholder });
     var err = h('p', { class: 'error', role: 'alert' });
     var swatches = h('div', { class: 'swatches', role: 'radiogroup', 'aria-label': S.chooseColor }, COLORS.map(function (c) {
-      var b = h('button', { type: 'button', class: 'swatch' + (c === color ? ' sel' : ''), style: 'background:' + c, role: 'radio', 'aria-checked': c === color ? 'true' : 'false', 'aria-label': COLOR_NAMES[COLORS.indexOf(c)],
+      var b = h('button', { type: 'button', class: 'swatch' + (c === color ? ' sel' : ''), style: 'background:' + c, role: 'radio', 'aria-checked': c === color ? 'true' : 'false', 'aria-label': (S.colorNames || [])[COLORS.indexOf(c)] || '',
         onclick: function () { color = c; [].forEach.call(swatches.children, function (x) { x.classList.remove('sel'); x.setAttribute('aria-checked', 'false'); }); b.classList.add('sel'); b.setAttribute('aria-checked', 'true'); } });
       return b;
     }));
@@ -66,6 +76,7 @@
     ]);
     app.innerHTML = '';
     app.appendChild(h('main', { class: 'screen center' }, [
+      langPicker('#/spillere'),
       h('div', { class: 'hero' }, [bob('happy', 'none', 150), h('div', {}, [h('h1', {}, S.appName), h('p', { class: 'lead' }, S.newPlayer)])]),
       storageWarning(), form
     ]));
@@ -190,6 +201,9 @@
     var bandSel = h('select', { 'aria-label': S.band, onchange: function (e) { p.band = e.target.value; Core.save(); } }, [
       h('option', { value: 'M', selected: p.band !== 'U' }, bandLabel('M')), h('option', { value: 'U', selected: p.band === 'U' }, bandLabel('U'))
     ]);
+    var langs = root.I18N ? root.I18N.available() : ['da'];
+    var langSel = langs.length < 2 ? null : h('label', { class: 'inline' }, [S.language + ' ', h('select', { 'aria-label': S.language, onchange: function (e) { Core.setProfileLang(p.id, e.target.value, '#/voksne'); } },
+      langs.map(function (c) { return h('option', { value: c, lang: root.I18N.info(c).html, selected: Core.profileLang(p) === c }, root.I18N.info(c).name); }))]);
     p.settings = p.settings || {};
     var extras = [];
     if (root.Badges) {
@@ -201,6 +215,7 @@
       h('div', { class: 'who' }, [avatar(p, 44), h('div', {}, [h('h2', {}, p.name), h('p', { class: 'muted' }, S.timePlayed + ': ' + t(S.minutes, { n: Math.round(total / 60) }))])]),
       h('div', { class: 'settings' }, [
         h('label', { class: 'inline' }, [S.band + ' ', bandSel]),
+        langSel,
         toggle(S.sound, p.settings.sound !== false, function (v) { p.settings.sound = v; Core.save(); }),
         toggle(S.readAloudAuto, !!p.settings.speechAuto, function (v) { p.settings.speechAuto = v; Core.save(); })
       ]),
@@ -241,7 +256,7 @@
       h('h2', {}, S.players),
       Core.profiles().map(function (p) { return profileSection(app, p); }),
       h('section', { class: 'card' }, [h('h2', {}, S.saveProgress), h('p', {}, S.saveHelp), out,
-        h('div', { class: 'row' }, [copyBtn, h('button', { type: 'button', class: 'btn secondary', onclick: function () { Core.download('bobspil-fremskridt-' + today + '.txt', code); } }, S.downloadFile)])]),
+        h('div', { class: 'row' }, [copyBtn, h('button', { type: 'button', class: 'btn secondary', onclick: function () { Core.download((S.progressFile || 'bobspil') + '-' + today + '.txt', code); } }, S.downloadFile)])]),
       h('section', { class: 'card' }, [h('h2', {}, S.loadProgress), h('p', {}, S.loadHelp), inBox, file,
         h('div', { class: 'row' }, [
           h('label', { class: 'btn secondary', for: 'loadfile' }, S.chooseFile),

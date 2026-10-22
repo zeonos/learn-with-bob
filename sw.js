@@ -1,8 +1,8 @@
 /* Service worker: gør spillene klar til brug uden internet (kun over https eller localhost).
  * Hæv VERSION, når du lægger nye filer op, så alle får den nye udgave. */
-var VERSION = 'bobspil-v21';
+var VERSION = 'bobspil-v22';
 var FILES = [
-  './', './index.html', './manifest.webmanifest', './shared/ui.css', './shared/strings-da.js',
+  './', './index.html', './manifest.webmanifest', './shared/ui.css', './shared/strings-da.js', './shared/i18n.js', './shared/strings-en.js',
   './shared/games.js', './shared/core.js', './shared/daily.js', './shared/badges.js', './shared/hub.js', './shared/start.js',
   './shared/mascot/bob.js', './shared/icons/icon-192.png', './shared/icons/icon-512.png', './shared/icons/icon-180.png', './regnestorm/regnestorm.css',
   './regnestorm/strings-da.js', './regnestorm/problems.js', './regnestorm/game.js', './ordjaegeren/ordjaegeren.css', './byggepladsen/byggepladsen.css',

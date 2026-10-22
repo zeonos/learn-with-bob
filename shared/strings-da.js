@@ -3,6 +3,10 @@ window.STR = window.STR || {};
 window.STR.core = {
   appName: 'Lær med Bob',
   whoPlays: 'Hvem spiller?',
+  language: 'Sprog',
+  colorNames: ['Gul', 'Blå', 'Grøn', 'Lyserød', 'Lilla', 'Orange'],
+  starsAria: '{n} af {max} stjerner',
+  progressFile: 'bobspil-fremskridt',
   newPlayer: 'Ny spiller',
   name: 'Navn',
   namePlaceholder: 'Skriv dit navn',
